@@ -1,13 +1,14 @@
-tools: calculator
-chat: true
-
-Ask calculator - what would be result of multiplication for 4 and 3?
-
----
 name: calculator
-description: Tool is mathematical calculator for simple arithmetic operations
+description: It is a mathematical calculator for simple arithmetic operations
 args: operation: One of the four fundamental arithmetic operations from addition, subtraction, division, and multiplication.
 args: number1: First argument of number type
 args: number2: Second argument of number type
+echo "Arguments:"
+echo "Operation is ${operation}"
+echo "First argument is ${number1}"
+echo "Second argument is ${number2}"
 
-{operation} of {number1} and {number2} will give result -
+Ask user to provide all arguments one by one, if something is not specified.
+
+Answer the question:
+What would be result of ${operation} for ${number1} and ${number2} ?
