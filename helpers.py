@@ -34,7 +34,7 @@ async def get_azure_config(model_name: str | None = None) -> AzureConfig | None:
     if 'GPTSCRIPT_AZURE_ENDPOINT' in os.environ and 'GPTSCRIPT_AZURE_API_KEY' in os.environ:
         endpoint = os.environ['GPTSCRIPT_AZURE_ENDPOINT']
         api_key = os.environ['GPTSCRIPT_AZURE_API_KEY']
-        deployment_name = os.environ.get(['GPTSCRIPT_AZURE_DEPLOYMENT_NAME'], model_name)
+        deployment_name = os.environ.get('GPTSCRIPT_AZURE_DEPLOYMENT_NAME', model_name)
         api_version = os.environ.get('GPTSCRIPT_AZURE_API_VERSION', DEFAULT_API_VERSION)
 
     if 'endpoint' in globals() and 'api_key' in globals() and 'deployment_name' in globals():
