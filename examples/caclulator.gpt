@@ -1,0 +1,13 @@
+tools: calculator
+chat: true
+
+Ask calculator - what would be result of multiplication for 4 and 3?
+
+---
+name: calculator
+description: Tool is mathematical calculator for simple arithmetic operations
+args: operation: One of the four fundamental arithmetic operations from addition, subtraction, division, and multiplication.
+args: number1: First argument of number type
+args: number2: Second argument of number type
+
+{operation} of {number1} and {number2} will give result -
