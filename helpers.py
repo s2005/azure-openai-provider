@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from dataclasses import dataclass
 
 from openai import AzureOpenAI
@@ -69,7 +70,8 @@ if __name__ == "__main__":
     config = asyncio.run(get_azure_config())
 
     if config is None:
-        raise Exception("Azure config not found. Please ensure you have configured the environment variables correctly.")
+        print("Azure config not found. Please ensure you have configured the environment variables correctly.")
+        sys.exit(1)
 
     env = {
         "env": {
