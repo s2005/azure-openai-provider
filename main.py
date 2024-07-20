@@ -53,6 +53,7 @@ async def list_models() -> JSONResponse:
 async def chat_completions(request: Request):
     data = await request.body()
     data = json.loads(data)
+    log("REQUEST JSON from completions: ", json.dumps(data, indent=4))
 
     tools = data.get("tools", NOT_GIVEN)
 
