@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from openai import AzureOpenAI
 
 DEFAULT_API_VERSION = '2024-02-01'
+DEFAULT_MODEL_NAME = 'gpt-4'
 
 endpoint: str
 api_key: str
@@ -42,7 +43,7 @@ async def get_azure_config(model_name: str | None = None) -> AzureConfig | None:
     elif 'GPTSCRIPT_AZURE_MODEL_NAME' in os.environ:
         deployment_name = os.environ['GPTSCRIPT_AZURE_MODEL_NAME']
     else:
-        deployment_name = 'gpt-4'
+        deployment_name = DEFAULT_MODEL_NAME
     if 'GPTSCRIPT_AZURE_API_VERSION' in os.environ:
         api_version = os.environ['GPTSCRIPT_AZURE_API_VERSION']
     else:
