@@ -34,12 +34,10 @@ async def get_azure_config(model_name: str | None = None) -> AzureConfig | None:
     if 'GPTSCRIPT_AZURE_ENDPOINT' in os.environ and 'GPTSCRIPT_AZURE_API_KEY' in os.environ:
         endpoint = os.environ['GPTSCRIPT_AZURE_ENDPOINT']
         api_key = os.environ['GPTSCRIPT_AZURE_API_KEY']
-    if model_name is not None:
-        if 'GPTSCRIPT_AZURE_DEPLOYMENT_NAME' in os.environ:
-            deployment_name = os.environ['GPTSCRIPT_AZURE_DEPLOYMENT_NAME']
-        else:
-            deployment_name = model_name
-
+    if 'GPTSCRIPT_AZURE_DEPLOYMENT_NAME' in os.environ:
+        deployment_name = os.environ['GPTSCRIPT_AZURE_DEPLOYMENT_NAME']
+    elif model_name is not None:
+        deployment_name = model_name
     if 'GPTSCRIPT_AZURE_API_VERSION' in os.environ:
         api_version = os.environ['GPTSCRIPT_AZURE_API_VERSION']
     else:
