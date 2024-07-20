@@ -34,10 +34,18 @@ async def get_azure_config(model_name: str | None = None) -> AzureConfig | None:
     if 'GPTSCRIPT_AZURE_ENDPOINT' in os.environ and 'GPTSCRIPT_AZURE_API_KEY' in os.environ:
         endpoint = os.environ['GPTSCRIPT_AZURE_ENDPOINT']
         api_key = os.environ['GPTSCRIPT_AZURE_API_KEY']
-        deployment_name = os.environ.get('GPTSCRIPT_AZURE_DEPLOYMENT_NAME', model_name)
-        api_version = os.environ.get('GPTSCRIPT_AZURE_API_VERSION', DEFAULT_API_VERSION)
+    if model_name is not None:
+        if 'GPTSCRIPT_AZURE_DEPLOYMENT_NAME' in os.environ:
+            deployment_name = os.environ['GPTSCRIPT_AZURE_DEPLOYMENT_NAME']
+        else:
+            deployment_name = model_name
 
-    if 'endpoint' in globals() and 'api_key' in globals() and 'deployment_name' in globals():
+    if 'GPTSCRIPT_AZURE_API_VERSION' in os.environ:
+        api_version = os.environ['GPTSCRIPT_AZURE_API_VERSION']
+    else:
+        api_version = DEFAULT_API_VERSION
+
+    if 'endpoint' in globals() and 'api_key' in globals() and 'deployment_name' in globals() and 'api_version' in globals():
         return AzureConfig(
             endpoint=endpoint,
             api_key=api_key,
@@ -45,11 +53,7 @@ async def get_azure_config(model_name: str | None = None) -> AzureConfig | None:
             api_version=api_version
         )
 
-    return AzureConfig(endpoint,
-                       deployment_name,
-                       api_key,
-                       api_version
-                       )
+    return None
 
 
 def client(endpoint: str, deployment_name: str, api_key: str, api_version: str) -> AzureOpenAI:
@@ -62,12 +66,19 @@ def client(endpoint: str, deployment_name: str, api_key: str, api_version: str) 
 
 
 if __name__ == "__main__":
+    import asyncio
+
+    config = asyncio.run(get_azure_config())
+
+    if config is None:
+        raise Exception("Azure config not found. Please ensure you have configured the environment variables correctly.")
+
     env = {
         "env": {
-            "GPTSCRIPT_AZURE_API_KEY": os.environ['GPTSCRIPT_AZURE_API_KEY'],
-            "GPTSCRIPT_AZURE_ENDPOINT": os.environ['GPTSCRIPT_AZURE_ENDPOINT'],
-            "GPTSCRIPT_AZURE_DEPLOYMENT_NAME": os.environ['GPTSCRIPT_AZURE_DEPLOYMENT_NAME'],
-            "GPTSCRIPT_AZURE_API_VERSION": os.environ.get('GPTSCRIPT_AZURE_API_VERSION', DEFAULT_API_VERSION)
+            "GPTSCRIPT_AZURE_API_KEY": config.api_key,
+            "GPTSCRIPT_AZURE_ENDPOINT": config.endpoint,
+            "GPTSCRIPT_AZURE_DEPLOYMENT_NAME": config.deployment_name,
+            "GPTSCRIPT_AZURE_API_VERSION": config.api_version
         }
     }
     print(json.dumps(env))

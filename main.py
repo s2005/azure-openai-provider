@@ -70,7 +70,9 @@ async def chat_completions(request: Request):
     messages = data["messages"]
     messages.insert(0, {"content": system, "role": "system"})
 
+    log(f"Model: {data['model']}")
     config = await helpers.get_azure_config(data["model"])
+    log(f"deployment_name: {config.deployment_name}")
     if config == None:
         raise HTTPException(status_code=400,
                             detail="Azure config not found. Please ensure you have configured the environment variables correctly.")
